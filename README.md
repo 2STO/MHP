@@ -1,9 +1,7 @@
 # MHP
 
-Magdalena Happy Plate
-GROUP 5 Members
 
-Group Leader : Badulis William Badulis
+Badulis William Badulis
 
 Antonio, James Paul 
 
