@@ -1,7 +1,7 @@
 # GROUP 5
 
 
-Leader: Badulis William Badulis
+Leader: Badulis, Charles William
 
 Antonio, James Paul 
 
