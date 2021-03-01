@@ -20,9 +20,12 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
@@ -49,6 +52,15 @@ public class PackageController implements Initializable {
     private RadioButton rbtn_package3;
     @FXML
     private ToggleGroup amount;
+    
+    @FXML
+    private TableView<Package> packageTable;
+
+    @FXML
+    private TableColumn<Package, Long> col_ID;
+
+    @FXML
+    private TableColumn<Package, String> col_Amount;
 
     @FXML
     private Button btn_confirm;
@@ -62,6 +74,8 @@ public class PackageController implements Initializable {
     @Lazy
     @Autowired
     private StageManager stageManager;
+    
+    private ObservableList<Package> packageList = FXCollections.observableArrayList();
 
     @Autowired
     private PackageService packageService;
@@ -95,7 +109,7 @@ public class PackageController implements Initializable {
         }
 
         clearFields();
-//        loadPackageDetails();
+        loadPackageDetails();
     }
 
     private void clearFields() {
@@ -112,7 +126,7 @@ public class PackageController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText("The Package has been confirmed and \n" + " ID is " + packages.getId() + ".");
         alert.showAndWait();
-//        loadPackageDetails();
+        loadPackageDetails();
     }
 
     private void updateAlert(Package packages) {
@@ -127,8 +141,14 @@ public class PackageController implements Initializable {
     public String getAmount() {
         return rbtn_package1.isSelected() ? "PHP 7,000" : "PHP 10,000";
     }
-//
 
+    private void setColumnProperties() {
+
+
+        col_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        col_Amount.setCellValueFactory(new PropertyValueFactory<>("Amount"));
+
+    }
 
     Callback<TableColumn<Package, Boolean>, TableCell<Package, Boolean>> cellFactory
             = new Callback<TableColumn<Package, Boolean>, TableCell<Package, Boolean>>() {
@@ -169,9 +189,7 @@ public class PackageController implements Initializable {
                     if (packages.getAmount().equals("PHP 7,000")) {
                         rbtn_package1.setSelected(true);
                     }
-//                    if (packages.getPackage().equals("PHP 10,000")) {
-//                        rbtn_package2.setSelected(true);
-//                    }
+
                     else {
                         rbtn_package2.setSelected(true);
                     }
@@ -180,16 +198,14 @@ public class PackageController implements Initializable {
             return cell;
         }
     };
-//
-//    /*
-//	 *  Add All event to observable list and update table
-//     */
-//    private void loadPackageDetails() {
-//        packageList.clear();
-//        packageList.addAll(packageService.findAll());
-//
-//
-//    }
+    
+        private void loadPackageDetails() {
+        packageList.clear();
+        packageList.addAll(packageService.findAll());
+
+        packageTable.setItems(packageList);
+    }
+
      private boolean validate(String field, String value, String pattern) {
         if (!value.isEmpty()) {
             Pattern p = Pattern.compile(pattern);
@@ -233,12 +249,10 @@ public class PackageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        packageTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-//
+        packageTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-//
-//        // Add all users into table
-//        loadPackageDetails();
+        setColumnProperties();
+        loadPackageDetails();
     }
 
 }
