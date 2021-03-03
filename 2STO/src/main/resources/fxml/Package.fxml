@@ -46,7 +46,7 @@
    <center>
       <AnchorPane prefHeight="426.0" prefWidth="650.0" style="-fx-background-color: #00a7ce;" BorderPane.alignment="CENTER">
          <children>
-            <RadioButton fx:id="rbtn_package1" layoutX="139.0" layoutY="37.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="153.0" selected="true" text="Package 1">
+            <RadioButton fx:id="rbtn_package1" layoutX="82.0" layoutY="37.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="153.0" selected="true" text="Package 1">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
@@ -118,7 +118,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <Button fx:id="btn_save" alignment="CENTER" layoutX="691.0" layoutY="534.0" mnemonicParsing="false" onAction="#btn_save" prefHeight="59.0" prefWidth="174.0" style="-fx-background-color: #4cd137;" text="Confirm" textFill="WHITE">
+            <Button fx:id="btn_save" alignment="CENTER" layoutX="1012.0" layoutY="521.0" mnemonicParsing="false" onAction="#btn_save" prefHeight="59.0" prefWidth="174.0" style="-fx-background-color: #4cd137;" text="Confirm" textFill="WHITE">
                <effect>
                   <DropShadow>
                      <color>
@@ -134,7 +134,8 @@
             <TableView fx:id="packageTable" layoutX="937.0" layoutY="85.0" prefHeight="389.0" prefWidth="249.0">
               <columns>
                 <TableColumn fx:id="col_ID" prefWidth="56.0" text="ID" />
-                <TableColumn fx:id="col_Amount" prefWidth="192.0" text="Amount" />
+                  <TableColumn fx:id="col_package" prefWidth="86.0" text="Package" />
+                <TableColumn fx:id="col_Amount" prefWidth="106.0" text="Amount" />
               </columns>
             </TableView>
          </children>

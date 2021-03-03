@@ -58,6 +58,9 @@ public class PackageController implements Initializable {
 
     @FXML
     private TableColumn<Package, Long> col_ID;
+    
+    @FXML
+    private TableColumn<Package, String> col_package;
 
     @FXML
     private TableColumn<Package, String> col_Amount;
@@ -94,6 +97,7 @@ public class PackageController implements Initializable {
 
                 Package packages = new Package();
                 packages.setAmount(getAmount());
+                packages.setPackages(getPackages());
 
                 Package newPackage = packageService.save(packages);
 
@@ -103,6 +107,7 @@ public class PackageController implements Initializable {
         } else {
             Package packages = packageService.find(Long.parseLong(lbl_packageId.getText()));
             packages.setAmount(getAmount());
+            packages.setPackages(getPackages());
 
             Package updatedPackage = packageService.update(packages);
             updateAlert(updatedPackage);
@@ -122,7 +127,7 @@ public class PackageController implements Initializable {
     private void saveAlert(Package packages) {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Event saved successfully.");
+        alert.setTitle("Package saved successfully.");
         alert.setHeaderText(null);
         alert.setContentText("The Package has been confirmed and \n" + " ID is " + packages.getId() + ".");
         alert.showAndWait();
@@ -141,12 +146,17 @@ public class PackageController implements Initializable {
     public String getAmount() {
         return rbtn_package1.isSelected() ? "PHP 7,000" : "PHP 10,000";
     }
+    
+    public String getPackages() {
+        return rbtn_package1.isSelected() ? "Package 1" : "Package 2";
+    }
 
     private void setColumnProperties() {
 
 
         col_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_Amount.setCellValueFactory(new PropertyValueFactory<>("Amount"));
+        col_package.setCellValueFactory(new PropertyValueFactory<>("Packages"));
 
     }
 
@@ -186,7 +196,15 @@ public class PackageController implements Initializable {
 
                 private void updatePackage(Package packages) {
                     lbl_packageId.setText(Long.toString(packages.getId()));
+                    
                     if (packages.getAmount().equals("PHP 7,000")) {
+                        rbtn_package1.setSelected(true);
+                    }
+
+                    else {
+                        rbtn_package2.setSelected(true);
+                    }
+                    if (packages.getPackages().equals("Package 1")) {
                         rbtn_package1.setSelected(true);
                     }
 

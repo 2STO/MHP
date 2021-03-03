@@ -116,12 +116,6 @@ public class EventController implements Initializable {
     private ObservableList<Event> eventList = FXCollections.observableArrayList();
 
     @FXML
-    void btn_back(ActionEvent event) {
-        stageManager.switchScene(FxmlView.PACKAGE);
-
-    }
-
-    @FXML
     void btn_clear(ActionEvent event) {
         clearFields();
     }
