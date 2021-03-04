@@ -162,7 +162,7 @@ public class ClientController implements Initializable {
         if (action.get() == ButtonType.OK) {
             userService.deleteInBatch(users);
         }
-
+        
         loadUserDetails();
     }
 

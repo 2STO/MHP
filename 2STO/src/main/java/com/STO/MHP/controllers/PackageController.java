@@ -12,13 +12,17 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import org.springframework.stereotype.Controller;
 import com.STO.MHP.config.StageManager;
+import com.STO.MHP.models.Event;
 import com.STO.MHP.services.impl.PackageService;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
@@ -54,6 +58,15 @@ public class PackageController implements Initializable {
     private ToggleGroup amount;
     
     @FXML
+    private RadioButton rbtn_cash;
+    
+    @FXML
+    private RadioButton rbtn_credit;
+    
+    @FXML
+    private ToggleGroup payment;
+    
+    @FXML
     private TableView<Package> packageTable;
 
     @FXML
@@ -64,6 +77,9 @@ public class PackageController implements Initializable {
 
     @FXML
     private TableColumn<Package, String> col_Amount;
+    
+    @FXML
+    private TableColumn<Package, String> col_Payment;
 
     @FXML
     private Button btn_confirm;
@@ -88,6 +104,24 @@ public class PackageController implements Initializable {
     void btn_confirm(ActionEvent event) {
         stageManager.switchScene(FxmlView.EVENT);
     }
+    
+    @FXML
+    void btn_delete(ActionEvent event) {
+
+        List<Package> packages = packageTable.getSelectionModel().getSelectedItems();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete the selected package?");
+        Optional<ButtonType> action = alert.showAndWait();
+
+        if (action.get() == ButtonType.OK) {
+            packageService.deleteInBatch(packages);
+        }
+
+        loadPackageDetails();
+    }
 
 
     @FXML
@@ -98,6 +132,7 @@ public class PackageController implements Initializable {
                 Package packages = new Package();
                 packages.setAmount(getAmount());
                 packages.setPackages(getPackages());
+                packages.setPayment(getPayment());
 
                 Package newPackage = packageService.save(packages);
 
@@ -108,6 +143,7 @@ public class PackageController implements Initializable {
             Package packages = packageService.find(Long.parseLong(lbl_packageId.getText()));
             packages.setAmount(getAmount());
             packages.setPackages(getPackages());
+            packages.setPayment(getPayment());
 
             Package updatedPackage = packageService.update(packages);
             updateAlert(updatedPackage);
@@ -122,6 +158,8 @@ public class PackageController implements Initializable {
         rbtn_package1.setSelected(true);
         rbtn_package2.setSelected(false);
         rbtn_package3.setSelected(false);
+        rbtn_cash.setSelected(false);
+        rbtn_credit.setSelected(false);
     }
 
     private void saveAlert(Package packages) {
@@ -150,6 +188,10 @@ public class PackageController implements Initializable {
     public String getPackages() {
         return rbtn_package1.isSelected() ? "Package 1" : "Package 2";
     }
+    
+    public String getPayment() {
+        return rbtn_cash.isSelected() ? "Cash" : "Credit Card";
+    }
 
     private void setColumnProperties() {
 
@@ -157,6 +199,7 @@ public class PackageController implements Initializable {
         col_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_Amount.setCellValueFactory(new PropertyValueFactory<>("Amount"));
         col_package.setCellValueFactory(new PropertyValueFactory<>("Packages"));
+        col_Payment.setCellValueFactory(new PropertyValueFactory<>("Payment"));
 
     }
 
@@ -210,6 +253,13 @@ public class PackageController implements Initializable {
 
                     else {
                         rbtn_package2.setSelected(true);
+                    }
+                    if (packages.getPayment().equals("Cash")) {
+                        rbtn_cash.setSelected(true);
+                    }
+
+                    else {
+                        rbtn_credit.setSelected(true);
                     }
                 }
             };

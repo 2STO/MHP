@@ -21,6 +21,8 @@ public class Package {
 	private String amount;
         
         private String packages;
+        
+        private String payment;
 	
 	
 	public long getId() {
@@ -46,11 +48,19 @@ public class Package {
 	public void setPackages(String packages) {
 		this.packages = packages;
 	}
+        
+        public String getPayment() {
+		return payment;
+	}
+
+	public void setPayment(String payment) {
+		this.payment = payment;
+	}        
 
         
 	@Override
 	public String toString() {
-		return "Package [id=" + id + ",amount="+ amount+",packages="+ packages + "]";
+		return "Package [id=" + id + ",amount="+ amount+",packages="+ packages +",payment="+ payment + "]";
 	}
 
 
